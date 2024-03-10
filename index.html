@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeJS game engine</title>
+
+    <style>
+
+        label {
+            margin-top: 0px; /* Add spacing between label and input */
+        }
+
+        .param-header {
+            text-align: center;
+            margin-bottom: 6vh;
+            color: #05053d;
+        }
+
+        .main-menu-button {
+            box-shadow:inset 0px 1px 0px 0px #dcecfb;
+            background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
+            background-color:#bddbfa;
+            border-radius:6px;
+            border:1px solid #84bbf3;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:7px 32px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #528ecc;
+            margin-top: 10px;
+        }
+        .main-menu-button:hover {
+            background:linear-gradient(to bottom, #80b5ea 5%, #bddbfa 100%);
+            background-color:#80b5ea;
+        }
+
+        .input-menu {
+            position: fixed;
+            right: 2%;
+            width: 18%;
+            /* From https://css.glass */
+
+            /*background: rgba(147, 154, 208, 0.57);*/
+            background: rgba(228, 235, 255, 0.57);
+            
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12.1px);
+            -webkit-backdrop-filter: blur(12.1px);
+        }
+
+        .input-container {
+            width: 17%;
+            padding: 20px; 
+        }
+
+        .input-text, .input-number {
+            font-size:14px; 
+            border-style:inset; 
+            border-color:#a8a8a8; 
+            text-align:left; 
+            border-width:1px; 
+            border-radius:8px; 
+            box-shadow: 2px 4px 12px 0px rgba(0,0,0,.72); 
+            text-shadow:0px 0px 0px rgba(42,42,42,.75); 
+            font-weight:normal; font-family:sans-serif; 
+            padding:6px;  
+            margin-bottom: 10px;
+        }
+
+        .input-color {
+            border-style:inset; 
+            border-color:#a8a8a8; 
+            border-width:1px; 
+            border-radius:8px; 
+            box-shadow: 2px 4px 12px 0px rgba(0,0,0,.72); 
+            text-shadow:0px 0px 0px rgba(42,42,42,.75); 
+            font-weight:normal; font-family:sans-serif; 
+            margin-bottom: 10px;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>    
+</head>
+<body>
+
+    <canvas id="bg"></canvas>
+
+    <div class="input-container input-menu" id="inputFieldsContainer">
+        <!-- Input fields will be appended here dynamically -->
+    </div>
+
+    <script src="bundle.js"></script>
+</body>
+</html>
