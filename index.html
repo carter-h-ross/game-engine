@@ -18,6 +18,32 @@
             color: #05053d;
         }
 
+        input[type="file"] {
+            display: none;
+        }
+
+        .back-button {
+            box-shadow:inset 0px 1px 0px 0px #dcecfb;
+            background:linear-gradient(to bottom, #fabdbd 5%, #ea8080 100%);
+            background-color:#fabdbd;
+            border-radius:6px;
+            border:1px solid #f38484;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:7px 32px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #cc5252;
+            margin-top: 10px;
+        }
+        .back-button:hover {
+            background:linear-gradient(to bottom, #ea8080 5%, #fabdbd 100%);
+            background-color:#ea8080;
+        }
+
         .main-menu-button {
             box-shadow:inset 0px 1px 0px 0px #dcecfb;
             background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
@@ -40,9 +66,46 @@
             background-color:#80b5ea;
         }
 
+        .file-input-button {
+            box-shadow:inset 0px 1px 0px 0px #d4d4d4;
+            background:linear-gradient(to bottom, #ffffff 5%, #e7e7e7 100%);
+            background-color:#e7e7e7;
+            border-radius:6px;
+            border:1px solid #d4d4d4;
+            display:inline-block;
+            cursor:pointer;
+            color:#000000;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:7px 32px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #d4d4d4;
+            margin-top: 10px;
+        }
+        .file-input-button:hover {
+            background:linear-gradient(to bottom, #e7e7e7 5%, #ffffff 100%);
+            background-color:#d4d4d4;
+        }
+
         .input-menu {
             position: fixed;
             right: 2%;
+            width: 18%;
+            /* From https://css.glass */
+
+            /*background: rgba(147, 154, 208, 0.57);*/
+            background: rgba(228, 235, 255, 0.57);
+            
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12.1px);
+            -webkit-backdrop-filter: blur(12.1px);
+        }
+
+        .nav-menu {
+            position: fixed;
+            left: 2%;
             width: 18%;
             /* From https://css.glass */
 
@@ -96,6 +159,10 @@
 <body>
 
     <canvas id="bg"></canvas>
+
+    <div class="input-container nav-menu" id="nav-menu">
+        <!-- menu buttons will be appended here dynamically -->
+    </div>
 
     <div class="input-container input-menu" id="inputFieldsContainer">
         <!-- Input fields will be appended here dynamically -->
