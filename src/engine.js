@@ -28,6 +28,7 @@ export class Game {
         //general
         this.textureLoader = new THREE.TextureLoader();
         this.scene = new THREE.Scene();
+        this.started = false;
 
         // 3d model loaders
         this.gltfLoader = new GLTFLoader();
@@ -67,7 +68,7 @@ export class Game {
 
             //cylinders 
             this.cylinderMeshes = [];
-            this.instancedCylinderMeshes = [];
+            this.instancedCylinderMeshes = [];  
 
             //cones 
             this.coneMeshes = [];
@@ -95,12 +96,100 @@ export class Game {
      * starts the process of rendering the game
      */
     start() {
-        const animate = () => {
-            requestAnimationFrame(animate);
-            this.renderer.render(this.scene, this.camera);
-        };
-        animate();
+        if (!(this.started)) {
+            const animate = () => {
+                requestAnimationFrame(animate);
+                this.renderer.render(this.scene, this.camera);
+            };
+            animate();
+            this.started = true;
+        }
     }
+
+    /**
+     * removes all of the shapes from the scene
+     */
+    reset() {
+        // Remove all box meshes
+        this.boxMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedBoxMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all sphere meshes
+        this.sphereMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedSphereMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all cylinder meshes
+        this.cylinderMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedCylinderMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all cone meshes
+        this.coneMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedConeMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all torus meshes
+        this.torusMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedTorusMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Clear other arrays
+        this.floorMapMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.wallMapMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        
+        // Clear other arrays
+        this.models3d.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Clear other arrays
+        this.pointLights.forEach(light => {
+            this.scene.remove(light);
+        });
+    
+        // Clear other arrays
+        if (this.ambientLight) {
+            this.scene.remove(this.ambientLight);
+        }
+    
+        // Reset arrays
+        this.boxMeshes = [];
+        this.instancedBoxMeshes = [];
+        this.sphereMeshes = [];
+        this.instancedSphereMeshes = [];
+        this.cylinderMeshes = [];
+        this.instancedCylinderMeshes = [];
+        this.coneMeshes = [];
+        this.instancedConeMeshes = [];
+        this.torusMeshes = [];
+        this.instancedTorusMeshes = [];
+        this.floorMapMeshes = [];
+        this.wallMapMeshes = [];
+        this.models3d = [];
+        this.pointLights = [];
+        this.ambientLight = null;
+    }    
 
     /*---- 3d builder helpers -----*/
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,6 +370,7 @@ export class Game {
             const sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
             sphereMesh.position.set(x, y, z);
             this.sphereMeshes.push(sphereMesh);
+            this.allMeshes.push(sphereMesh);
             this.scene.add(sphereMesh);
         }
         /**
@@ -315,8 +405,9 @@ export class Game {
                 matrix.compose(position, quaternion, scale);
                 instMesh.setMatrixAt(i, matrix);
             }
-            this.scene.add(instMesh);
             this.instancedSphereMeshes.push(instMesh);
+            this.allMeshes.push(instMesh);
+            this.scene.add(instMesh);
         }
         
         /**
@@ -371,6 +462,7 @@ export class Game {
             const cylinderMesh = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
             cylinderMesh.position.set(x, y, z);
             this.cylinderMeshes.push(cylinderMesh);
+            this.allMeshes.push(cylinderMesh);
             this.scene.add(cylinderMesh);
         }
         /**
@@ -409,8 +501,9 @@ export class Game {
                 matrix.compose(position, quaternion, scale);
                 instMesh.setMatrixAt(i, matrix);
             }
-            this.scene.add(instMesh);
+            this.allMeshes.push(instMesh);
             this.instancedCylinderMeshes.push(instMesh);
+            this.scene.add(instMesh);
         }
         /**
          * Removes a cylinder from the scene.
@@ -466,6 +559,7 @@ export class Game {
             }
             const coneMesh = new THREE.Mesh(coneGeometry, coneMaterial);
             coneMesh.position.set(x, y, z);
+            this.allMeshes.push(coneMesh);
             this.coneMeshes.push(coneMesh);
             this.scene.add(coneMesh);
         }
@@ -502,8 +596,9 @@ export class Game {
                 matrix.compose(position, quaternion, scale);
                 instMesh.setMatrixAt(i, matrix);
             }
-            this.scene.add(instMesh);
             this.instancedConeMeshes.push(instMesh);
+            this.allMeshes.push(instMesh);
+            this.scene.add(instMesh);
         }
         
         /**
@@ -563,6 +658,7 @@ export class Game {
             const torusMesh = new THREE.Mesh(torusGeometry, torusMaterial);
             torusMesh.position.set(x, y, z);
             this.torusMeshes.push(torusMesh);
+            this.allMeshes.push(torusMesh)
             this.scene.add(torusMesh);
         }
         /**
@@ -606,8 +702,9 @@ export class Game {
                 matrix.compose(position, quaternion, scale);
                 instMesh.setMatrixAt(i, matrix);
             }
-            this.scene.add(instMesh);
             this.instancedTorusMeshes.push(instMesh);
+            this.allMeshes.push(instMesh);
+            this.scene.add(instMesh);
         }
         
         /**

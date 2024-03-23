@@ -1,7 +1,7 @@
 import {threeScriptToJavascript, getThreeScriptFunction} from './translate.js'
 import {stringTo2dNumArray} from './stringToArray.js'
 
-let script = "0:0:0:.0.0.0.1.1.1#FFFFFF^n|0:0:0:.0.0.2.1.1.1#FFFFFF|1:0:0:#FFFFFF|0:1:1:=2,0,0;2,0,-2;2,0,2.1#FFFFFF^n|2:0:0:^n";
+let script = "2:0:0:^n|1:0:0:#FFFFFF";
 
 let render = threeScriptToJavascript(script);
 
@@ -51,7 +51,7 @@ let functions = [
                 { name: "texture", type: "file" }
             ],
         },
-        // add instanced box - 0
+        // add instanced box - 1
         {
             name: "addInstancedBox",
             buttonText: "add instanced box",
@@ -92,6 +92,37 @@ let functions = [
             ],
         },
     ], 
+
+    [ // cylinders - 1
+        // add cylinders - 0
+        {
+            name: "addCylinder",
+            buttonText: "add cylinder",
+            params: [
+                { name: "x", type: "number" },
+                { name: "y", type: "number" },
+                { name: "z", type: "number" },
+                { name: "radiusTop", type: "number" },
+                { name: "radiusBot", type: "number" },
+                { name: "height", type: "number" },
+                { name: "color", type: "color" },
+                { name: "texture", type: "file" }
+            ],
+        },
+        // add instanced spheres - 0
+        {
+            name: "addInstancedCylinders",
+            buttonText: "add instanced cylinders",
+            params: [
+                { name: "positions", type: "array2dNum" },
+                { name: "radiusTop", type: "number" },
+                { name: "radiusBot", type: "number" },
+                { name: "height", type: "number" },
+                { name: "color", type: "color" },
+                { name: "texture", type: "file" }
+            ],
+        },
+    ],
 ],
 
 [// lighting - 1
@@ -148,11 +179,17 @@ let functions = [
  * @param {string} [type] - the number of divisions in the grid helper         
  */
 function translateInputValue(val, type) {
+    console.log(`the value type: ${type}`)
+    console.log(val)
     switch (type) {
         case "array2dNum":
             return stringTo2dNumArray(val);
+        case "number":
+            return parseInt(val)
+        case "color":
+            return val;
         default: 
-            return val
+            return null;
     }
 }
 
@@ -222,7 +259,7 @@ function createInputFields(cat1, cat2, func) {
 
     // Create "Add to Scene" button
     const addButton = document.createElement("button");
-    addButton.textContent = "Add to Scene";
+    addButton.textContent = funcObj.buttonText;
     addButton.classList.add("main-menu-button");
     addButton.id = "addToSceneButton"; // Assign an ID to the button for easy reference
     
@@ -243,6 +280,8 @@ function createInputFields(cat1, cat2, func) {
 
 function updateScript (cat1, cat2, func, params) {
     script += getThreeScriptFunction(cat1, cat2, func, params);
+    console.log(script);
+    threeScriptToJavascript(script);
 }
 
 function loadCat1Menu() {

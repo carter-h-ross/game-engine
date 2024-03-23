@@ -59,7 +59,6 @@ function removeLinebreaks(str) {
     for (let i = 0; i < str.length; i++)
         if (!(str[i] == "\n" || str[i] == "\r"))
             newstr += str[i];
-    console.log("new string : "+newstr);
     return newstr;
 }
 
@@ -70,7 +69,6 @@ function removeLinebreaks(str) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 function cat1_0(cat2, func, params) {
-    console.log(`cat2: ${cat2}`)
     switch (cat2) {
 
         case "0": // boxes
@@ -242,7 +240,6 @@ function cat1_1(cat2, func, params) {
         ////////////////////////////////////////////////////////////////////////////////////////////////////
             switch (func) {
                 case "0": // add ambient light
-                    console.log("adding ambient light")
                     scene.addAmbientLight(params[0]);
                     break;
                 case "1": // remove ambient light
@@ -260,7 +257,6 @@ function cat1_2(cat2, func, params) {
         ////////////////////////////////////////////////////////////////////////////////////////////////////
             switch (func) {
                 case "0":
-                    console.log("enebaling orbital controls")
                     scene.enableOrbitalControls();
                     break;
                 case "1": 
@@ -272,11 +268,13 @@ function cat1_2(cat2, func, params) {
 }
 
 export function threeScriptToJavascript(script) {
+    if (scene.started) {
+        console.log("resetting scene")
+        scene.reset();
+    }
     const commands = script.split("|");
-    console.log("commands")
     for (let i = 0;i < commands.length;i++) {
         const cmd = splitCommand(commands[i]);
-        console.log(cmd)
         switch(cmd[0]) {
 
             case "0":
@@ -298,7 +296,6 @@ export function threeScriptToJavascript(script) {
 
 function splitCommand (command) {
     const commandPath = command.split(":");
-    console.log(commandPath);
     commandPath[3] = getParams(commandPath[3]);
     return commandPath;
 }
@@ -318,11 +315,9 @@ function getParams (paramsStr) {
         params.push(paramsStr.substring(i-1, i+length));
         i += length;
     }
-    console.log(`params before conversion: ${params}`);
     for (let i = 0;i < params.length;i++) {
         params[i] = convertParam(params[i].charAt(0,1), params[i].substring(1,params[i].length))
     }
-    console.log(params)
     return params;
 }
 
@@ -339,8 +334,6 @@ function get2dNumArray (arr) {
     for (let i = 0;i < result.length;i++) {
         result[i] = result[i].split(',');
     }
-    console.log("resulting 2d num array");
-    console.log(result);
     return result;
 }
 
@@ -349,7 +342,6 @@ function get2dStringArray (arr) {
 }
 
 function convertParam (tag, val) {
-    console.log(`converting with tag: ${tag} | val: ${val}`)
     switch (tag) {
         
         case ".": 
@@ -385,6 +377,23 @@ export function getThreeScriptFunction (cat1, cat2, func, params) {
 
 function paramsToThreeScript (params) {
     let result = "";
-    console.log(params)
+    for (let i = 0;i < params.length;i++) {
+        switch (typeof params[i]) {
+            case "number":
+                result += `.${params[i]}`;
+                break;
+            case "string":
+                switch (params[i].substring(0,1)) {
+                    case "#": 
+                        result += params[i];
+                        break;
+                    default: 
+                        result += "^n"
+                }
+                break;
+            default: 
+                result += "^n";
+        }
+    }
     return result;
 }

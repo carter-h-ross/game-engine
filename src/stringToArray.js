@@ -25,7 +25,7 @@ export function stringTo2dNumArray(arrString) {
 
     // Convert rows to numerical values and build the 2D array
     const result = rows.map(row => {
-        const nums = row.split('').map(num => parseInt(num));
+        const nums = row.split(',').map(num => parseInt(num));
         return nums;
     });
 
