@@ -51,7 +51,7 @@ let functions = [
                 { name: "texture", type: "file" }
             ],
         },
-        // add instanced box - 1
+        // add instanced box - 0
         {
             name: "addInstancedBox",
             buttonText: "add instanced box",
@@ -259,7 +259,7 @@ function createInputFields(cat1, cat2, func) {
 
     // Create "Add to Scene" button
     const addButton = document.createElement("button");
-    addButton.textContent = funcObj.buttonText;
+    addButton.textContent = "Add to Scene";
     addButton.classList.add("main-menu-button");
     addButton.id = "addToSceneButton"; // Assign an ID to the button for easy reference
     

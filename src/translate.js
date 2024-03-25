@@ -381,18 +381,6 @@ function paramsToThreeScript (params) {
         switch (typeof params[i]) {
             case "number":
                 result += `.${params[i]}`;
-                break;
-            case "string":
-                switch (params[i].substring(0,1)) {
-                    case "#": 
-                        result += params[i];
-                        break;
-                    default: 
-                        result += "^n"
-                }
-                break;
-            default: 
-                result += "^n";
         }
     }
     return result;
