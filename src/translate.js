@@ -1,4 +1,5 @@
 import {Game, rgbToHex, degToRad} from "./engine.js";
+import {num2dArrayToThreeArray} from "./arrayToThreeArray.js";
 
 let scene = new Game();
 
@@ -341,6 +342,8 @@ function get2dStringArray (arr) {
 
 }
 
+
+
 function convertParam (tag, val) {
     switch (tag) {
         
@@ -378,9 +381,27 @@ export function getThreeScriptFunction (cat1, cat2, func, params) {
 function paramsToThreeScript (params) {
     let result = "";
     for (let i = 0;i < params.length;i++) {
+        console.log(typeof params[i]);
         switch (typeof params[i]) {
             case "number":
                 result += `.${params[i]}`;
+                break;
+            case "string":
+                switch (params[i].substring(0,1)) {
+                    case "#": 
+                        result += params[i];
+                        break;
+                    default: 
+                        result += "^n"
+                }
+                break;
+            case "object":
+                console.log(params);
+                console.log(i);
+                result += num2dArrayToThreeArray(params[i]);
+                break;
+            default: 
+                result += "^n";
         }
     }
     return result;

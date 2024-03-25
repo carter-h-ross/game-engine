@@ -51,7 +51,7 @@ let functions = [
                 { name: "texture", type: "file" }
             ],
         },
-        // add instanced box - 0
+        // add instanced box - 1
         {
             name: "addInstancedBox",
             buttonText: "add instanced box",
@@ -179,8 +179,6 @@ let functions = [
  * @param {string} [type] - the number of divisions in the grid helper         
  */
 function translateInputValue(val, type) {
-    console.log(`the value type: ${type}`)
-    console.log(val)
     switch (type) {
         case "array2dNum":
             return stringTo2dNumArray(val);
@@ -259,7 +257,7 @@ function createInputFields(cat1, cat2, func) {
 
     // Create "Add to Scene" button
     const addButton = document.createElement("button");
-    addButton.textContent = "Add to Scene";
+    addButton.textContent = funcObj.buttonText;
     addButton.classList.add("main-menu-button");
     addButton.id = "addToSceneButton"; // Assign an ID to the button for easy reference
     
@@ -270,19 +268,55 @@ function createInputFields(cat1, cat2, func) {
             const inputValue = document.getElementById(param.name).value;
             return translateInputValue(inputValue, param.type);
         });
-
-        // Call the updateScript function with the obtained parameters
+        console.log(params);
+        
         updateScript(cat1, cat2, func, params);
+        resetInputFields();
     });
 
     container.appendChild(addButton);
 }
 
-function updateScript (cat1, cat2, func, params) {
+// Function to reset input fields
+function resetInputFields() {
+    const inputFields = document.querySelectorAll(".input-all");
+    /* inputFields.forEach(input => {
+        input.value = ""; // Clear input value
+    }); */
+}
+
+/**
+ * checks if an input value needs to be translated from its input type
+ * @param {number} [cat1] - 1st category of function to call
+ * @param {number} [cat2] - 2nd category of function to call   
+ * @param {number} [func] - index of function to call
+ * @param {any[]} [params] - paramaters of the function being called
+ */
+function updateScript(cat1, cat2, func, params) {
+    for (let param of params) {
+        // Skip checking for NaN if the param is a string or null
+        if (typeof param === 'string' || param === null || Array.isArray(param)) {
+            continue;
+        }
+        
+        // Check for NaN for other types
+        if (isNaN(param)) {
+            alert("Field that requires a number to be filled is not filled");
+            return;
+        }
+    }
+    
     script += getThreeScriptFunction(cat1, cat2, func, params);
     console.log(script);
     threeScriptToJavascript(script);
 }
+
+/*----- loading menus -----*/
+///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function loadCat1Menu() {
     const container = document.getElementById("nav-menu");

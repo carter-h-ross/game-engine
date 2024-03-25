@@ -110,12 +110,86 @@ export class Game {
      * removes all of the shapes from the scene
      */
     reset() {
-        console.log(this.allMeshes);
-        for (let i = 0;i < this.allMeshes.length;i++) {
-            console.log(this.allMeshes[i])
-            this.scene.remove(this.allMeshes[i]);
+        // Remove all box meshes
+        this.boxMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedBoxMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all sphere meshes
+        this.sphereMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedSphereMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all cylinder meshes
+        this.cylinderMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedCylinderMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all cone meshes
+        this.coneMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedConeMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Remove all torus meshes
+        this.torusMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.instancedTorusMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Clear other arrays
+        this.floorMapMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        this.wallMapMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+        
+        // Clear other arrays
+        this.models3d.forEach(mesh => {
+            this.scene.remove(mesh);
+        });
+    
+        // Clear other arrays
+        this.pointLights.forEach(light => {
+            this.scene.remove(light);
+        });
+    
+        // Clear other arrays
+        if (this.ambientLight) {
+            this.scene.remove(this.ambientLight);
         }
-    }
+    
+        // Reset arrays
+        this.boxMeshes = [];
+        this.instancedBoxMeshes = [];
+        this.sphereMeshes = [];
+        this.instancedSphereMeshes = [];
+        this.cylinderMeshes = [];
+        this.instancedCylinderMeshes = [];
+        this.coneMeshes = [];
+        this.instancedConeMeshes = [];
+        this.torusMeshes = [];
+        this.instancedTorusMeshes = [];
+        this.floorMapMeshes = [];
+        this.wallMapMeshes = [];
+        this.models3d = [];
+        this.pointLights = [];
+        this.ambientLight = null;
+    }    
 
     /*---- 3d builder helpers -----*/
     ////////////////////////////////////////////////////////////////////////////////////////////////////
