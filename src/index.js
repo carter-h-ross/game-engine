@@ -1,7 +1,8 @@
-import {threeScriptToJavascript, getThreeScriptFunction} from './translate.js'
+import {threeScriptToJavascript, getThreeScriptFunction, deleteCommandFromScript, insertCommandToScript} from './translate.js'
 import {stringTo2dNumArray} from './stringToArray.js'
 
 let script = "2:0:0:^n|1:0:0:#FFFFFF";
+const controlIndex = 0;
 
 let render = threeScriptToJavascript(script);
 
@@ -48,7 +49,7 @@ let functions = [
                 { name: "scaleY", type: "number" },
                 { name: "scaleZ", type: "number" },
                 { name: "color", type: "color" },
-                { name: "texture", type: "file" }
+                //{ name: "texture", type: "file" }
             ],
         },
         // add instanced box - 1
@@ -61,7 +62,7 @@ let functions = [
                 { name: "scaleY", type: "number" },
                 { name: "scaleZ", type: "number" },
                 { name: "color", type: "color" },
-                { name: "texture", type: "file" }
+                //{ name: "texture", type: "file" }
             ],
         },
     ],
@@ -77,7 +78,7 @@ let functions = [
                 { name: "z", type: "number" },
                 { name: "radius", type: "number" },
                 { name: "color", type: "color" },
-                { name: "texture", type: "file" }
+                //{ name: "texture", type: "file" }
             ],
         },
         // add instanced spheres - 0
@@ -88,12 +89,12 @@ let functions = [
                 { name: "positions", type: "array2dNum" },
                 { name: "radius", type: "number" },
                 { name: "color", type: "color" },
-                { name: "texture", type: "file" }
+                //{ name: "texture", type: "file" }
             ],
         },
     ], 
 
-    [ // cylinders - 1
+    [ // cylinders - 2
         // add cylinders - 0
         {
             name: "addCylinder",
@@ -106,7 +107,7 @@ let functions = [
                 { name: "radiusBot", type: "number" },
                 { name: "height", type: "number" },
                 { name: "color", type: "color" },
-                { name: "texture", type: "file" }
+                //{ name: "texture", type: "file" }
             ],
         },
         // add instanced spheres - 0
@@ -119,7 +120,37 @@ let functions = [
                 { name: "radiusBot", type: "number" },
                 { name: "height", type: "number" },
                 { name: "color", type: "color" },
-                { name: "texture", type: "file" }
+                //{ name: "texture", type: "file" }
+            ],
+        },
+    ],
+    [ // cones - 3
+        // add cylinders - 0
+        {
+            name: "addCylinder",
+            buttonText: "add cylinder",
+            params: [
+                { name: "x", type: "number" },
+                { name: "y", type: "number" },
+                { name: "z", type: "number" },
+                { name: "radiusTop", type: "number" },
+                { name: "radiusBot", type: "number" },
+                { name: "height", type: "number" },
+                { name: "color", type: "color" },
+                //{ name: "texture", type: "file" }
+            ],
+        },
+        // add instanced spheres - 0
+        {
+            name: "addInstancedCylinders",
+            buttonText: "add instanced cylinders",
+            params: [
+                { name: "positions", type: "array2dNum" },
+                { name: "radiusTop", type: "number" },
+                { name: "radiusBot", type: "number" },
+                { name: "height", type: "number" },
+                { name: "color", type: "color" },
+                //{ name: "texture", type: "file" }
             ],
         },
     ],
@@ -133,7 +164,7 @@ let functions = [
         // add ambient light - 0
         {
             name: "addAmbientLight",
-            buttonText: "add ambient light",
+            buttonText: "set ambient light",
             params: [
                 { name: "color", type: "color" },
             ],
@@ -149,7 +180,7 @@ let functions = [
     ],
 ],
 
-[// lighting - 1
+[// controls - 2
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -191,7 +222,7 @@ function translateInputValue(val, type) {
     }
 }
 
-function createInputFields(cat1, cat2, func) {
+function createInputFields(cat1, cat2, func, existing = false) {
     // Get the function object
     const funcObj = functions[cat1][cat2][func];
 
@@ -260,6 +291,14 @@ function createInputFields(cat1, cat2, func) {
     addButton.textContent = funcObj.buttonText;
     addButton.classList.add("main-menu-button");
     addButton.id = "addToSceneButton"; // Assign an ID to the button for easy reference
+
+    if (existing) {
+        // Create "remove from Scene" button
+        const removeButton = document.createElement("button");
+        removeButton.textContent = funcObj.buttonText;
+        removeButton.classList.add("main-menu-button");
+        removeButton.id = "removeFromSceneButton"; // Assign an ID to the button for easy reference
+    }
     
     // Attach event listener to the "Add to Scene" button
     addButton.addEventListener("click", () => {
@@ -269,6 +308,14 @@ function createInputFields(cat1, cat2, func) {
             return translateInputValue(inputValue, param.type);
         });
         console.log(params);
+        
+        updateScript(cat1, cat2, func, params);
+        resetInputFields();
+    });
+
+    // Attach event listener to the "remove from Scene" button
+    addButton.addEventListener("click", () => {
+        script = deleteCommandFromScript(script)
         
         updateScript(cat1, cat2, func, params);
         resetInputFields();

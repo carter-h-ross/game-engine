@@ -342,8 +342,6 @@ function get2dStringArray (arr) {
 
 }
 
-
-
 function convertParam (tag, val) {
     switch (tag) {
         
@@ -376,6 +374,18 @@ function convertParam (tag, val) {
 
 export function getThreeScriptFunction (cat1, cat2, func, params) {
     return `|${cat1}:${cat2}:${func}:${paramsToThreeScript(params)}`;
+}
+
+export function deleteCommandFromScript(script, indexToDelete) {
+    let splitScript = script.split("|");
+    splitScript.splice(indexToDelete, 1);
+    return splitScript.join("|")
+}
+
+export function insertCommandToScript(newCommand, script, index) {
+    let splitScript = script.split("|");
+    splitScript.splice(index, 0, newCommand);
+    return splitScript.join("|");
 }
 
 function paramsToThreeScript (params) {

@@ -189,6 +189,8 @@ export class Game {
         this.models3d = [];
         this.pointLights = [];
         this.ambientLight = null;
+
+        this.funcCount = 1;
     }    
 
     /*---- 3d builder helpers -----*/
